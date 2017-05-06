@@ -1,29 +1,40 @@
-#IFNDEF TREE_H_
-#DEFINE TREE_H_
+/**
+* Name: Red-Black Tree
+* Author: Agata Szulc
+* 6.05.2017
+*/
+
+#ifndef TREE_H_
+#define TREE_H_
 #include <iostream>
 
-class Tree
+template <class T>
+class tree
 {
     public:
-      template <class T>
+      //template <typename T>
       class node
       {
           int key;
-          char color // r-red, b-black
+          char color; // r-red, b-black
           node * up;
           node * left;
           node * right;
           T data;
-      }
+      };
 
-      tree(T content); //constructor
+      tree(); //constructor
       ~tree(); //destructor
+      deleteTree(node * temp);
+      showTree(node * first);
+      traversingTree(node * temp);
 
     private:
       node * root;
+      node dummy; //dummy node contains every null node (leaf)
       int size;
-}
+};
 
 
 
-#ENDIF TREE_H_
+#endif //TREE_H_
