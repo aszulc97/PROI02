@@ -30,6 +30,8 @@ class tree
       void traversingTree(node * temp);
       node * findNode(node * temp, T val);
       void addNode(T val);
+      void leftRotation (node * x);
+      void rightRotation (node * x);
 
     private:
       node * root;

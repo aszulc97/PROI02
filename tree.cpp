@@ -63,17 +63,98 @@ void tree<T>::showTree()
 template<typename T>
 void tree<T>::addNode(T val)
 {
-  node * newNode;
+  node * newNode, uncle; //uncle - brother of a parent - like in family tree
   newNode = new node;
   newNode->left=&dummy;
   newNode->right=&dummy;
   newNode->up=root;
   newNode->data=val;
 
-  if (newNode->up == &dummy)
+  if (newNode->up == &dummy) //tree's empty
   {
     root=newNode;
-    root->color='b';
+    //root->color='b';
   }
-  else newNode->color='r';
+  else
+  {
+    while (true)
+    {
+      if(val<newNode->up->data)
+      {
+        if (newNode->up->left == &dummy) //left leaf doesn't exist
+        {
+          newNode->up->left == newNode; // newNode becomes left leaf
+          break;
+        }
+        newNode->up = newNode->up->left;
+      }
+      else
+      {
+        if(newNode->up->right == &dummy) //similarly
+        {
+          newNode->up->right = newNode;
+          break;
+        }
+        newNode->up = newNode->up->right;
+      }
+    }
+  }
+
+  newNode->color = 'r';
+
+  while((newNode != root) && (newNode->up->color == 'r')) //checking properties of Red-Black Tree
+  {
+    if(newNode->up == newNode->up->up->left)
+    {
+      uncle = newNode->up->up->right;
+
+      if(uncle->color == 'r')  //newNode, parent and uncle are red
+      {
+        newNode->up->color = 'b'; //reversing colors
+        uncle->color = 'b';
+        newNode->up->up->color = 'r';
+        newNode = newNode->up->up;
+        continue;  //to check if grandparent can be red
+      }
+
+      if(newNode == newNode->up->right) //left-rotation case
+      {
+        newNode = newNode->up;
+        leftRotation(newNode);
+      }  //now parent is our newNode, right rotation needed
+
+      // right-rotation case
+      newNode->up->color = 'b'; //reversing colors
+      newNode->up->up->color = 'r';
+      rightRotation(newNode->up->up);
+      break;
+    }
+    else
+    {                  // mirror cases
+      uncle = newNode->up->up->left;
+
+      if(uncle->color == 'r')
+      {
+        newNode->up->color = 'b';
+        uncle->color = 'b';
+        newNode->up->up->color = 'r';
+        newNode = newNode->up->up;
+        continue;
+      }
+
+      if(newNode == newNode->up->left)
+        newNode = newNode->up;
+        rightRotation(newNode);
+      }
+
+      newNode->up->color = 'b'; 3
+      newNode->up->up->color = 'r';
+      leftRotation(newNode->up->up);
+      break;
+    }
+  }
+  root->color = 'b';
+}
+
+
 }
