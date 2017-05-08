@@ -8,14 +8,14 @@
 #define TREE_H_
 #include <iostream>
 
-template <class T>
+template <typename T>
 class tree
 {
     public:
       //template <typename T>
       class node
       {
-          int key;
+        public:
           char color; // r-red, b-black
           node * up;
           node * left;
@@ -25,9 +25,11 @@ class tree
 
       tree(); //constructor
       ~tree(); //destructor
-      deleteTree(node * temp);
-      showTree(node * first);
-      traversingTree(node * temp);
+      void deleteTree(node * temp);
+      void showTree();
+      void traversingTree(node * temp);
+      node * findNode(node * temp, T val);
+      void addNode(T val);
 
     private:
       node * root;

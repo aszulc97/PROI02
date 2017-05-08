@@ -8,15 +8,14 @@
 #include "tree.h"
 using namespace std;
 
-template<class T>
+template<typename T>
 tree<T>::tree() //contains only dummy node
 {
-  dummy->color='b';
-  dummy->data=NULL;
-  dummy->key=NULL;
-  dummy->up=&dummy;
-  dummy->left=&dummy;
-  dummy->right=&dummy;
+  dummy.color='b';
+  dummy.data=NULL;
+  dummy.up=&dummy;
+  dummy.left=&dummy;
+  dummy.right=&dummy;
   root=&dummy;
   size=1;
 }
@@ -28,7 +27,7 @@ tree<T>::~tree()
 }
 
 template<class T>
-tree<T>::deleteTree(node * temp)  //recursion
+void tree<T>::deleteTree(node * temp)  //recursion
 {
   if (temp!=&dummy)
   {
@@ -39,27 +38,42 @@ tree<T>::deleteTree(node * temp)  //recursion
 }
 
 template<class T>
-tree<T>::traversingTree(node * temp)
+void tree<T>::traversingTree(node * temp)
 {
-  if(temp)
+  if(temp != &dummy)
   {
-    cout<<temp->key<<" ";
+    cout<<"Node data: "<<temp->data<<"\t"<<"Color: "<<temp->color<<"\t"<<"Parent: "<<temp->up->data;
     traversingTree(temp->left); //traversing left subtree
     traversingTree(temp->right);
   }
 }
 template<class T>
-tree<T>::showTree(node * first)
+void tree<T>::showTree()
 {
-  node * current=first;
+  //node * current=first;
   cout<<"Zawartosc drzewa:"<<endl;
   cout<<"---------------------------"<<endl;
-  for (int i=0; i<size; i++)
+  traversingTree(root);
+  cout<<endl<<"---------------------------"<<endl;
+}
+
+//template<class T>
+//typename tree<T>::node * tree<T>::findNode(node * temp, T val);
+
+template<typename T>
+void tree<T>::addNode(T val)
+{
+  node * newNode;
+  newNode = new node;
+  newNode->left=&dummy;
+  newNode->right=&dummy;
+  newNode->up=root;
+  newNode->data=val;
+
+  if (newNode->up == &dummy)
   {
-    current.refer->id=i+1;
-    //gotoxy(300,200);
-    cout << "Id: " << current.refer->id << "\tLiczba: " << current.refer->value << "\tIlosc dostepow: " << current.refer->access << "\n";
-    current.refer=current.refer->next;
+    root=newNode;
+    root->color='b';
   }
-cout<<"---------------------------"<<endl;
+  else newNode->color='r';
 }
