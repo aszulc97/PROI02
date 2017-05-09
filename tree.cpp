@@ -17,7 +17,7 @@ tree<T>::tree() //contains only dummy node
   dummy.left=&dummy;
   dummy.right=&dummy;
   root=&dummy;
-  size=1;
+  size=0;
 }
 
 template<class T>
@@ -54,11 +54,22 @@ void tree<T>::showTree()
   cout<<"Zawartosc drzewa:"<<endl;
   cout<<"---------------------------"<<endl;
   traversingTree(root);
-  cout<<endl<<"---------------------------"<<endl;
+  cout<<"---------------------------"<<endl;
+  cout<<"Size: "<<size<<endl;
 }
 
-//template<class T>
-//typename tree<T>::node * tree<T>::findNode(node * temp, T val);
+template<class T>
+typename tree<T>::node * tree<T>::getNode(T val)
+{
+  node * temp;
+
+  temp = root;
+  while((temp != &dummy) && (temp->data != val))
+    if(val < temp->data) temp = temp->left;
+    else           temp = temp->right;
+  if(temp == &dummy) return NULL;  //node not found
+  return temp;
+}
 
 template<typename T>
 void tree<T>::addNode(T val)
@@ -155,6 +166,7 @@ void tree<T>::addNode(T val)
     }
   }
   root->color = 'b';
+  size++;
 } //addNode
 
 template<typename T>
@@ -204,5 +216,130 @@ void tree<T>::rightRotation(node * x)
   }
 }
 
+//TODO: give nodes prettier names
+template<typename T>
+void tree<T>::deleteNode(node * a)
+{
+  node * b, * c, * d;
+
+  if((a->left == &dummy) || (a->right == &dummy)) b = a;
+  else                                    b = succesor(a);
+
+  if(b->left != &dummy) c = b->left;
+  else              c = b->right;
+
+  c->up = b->up;
+
+  if(b->up == &dummy) root = c;
+  else if(b == b->up->left) b->up->left  = c;
+  else                      b->up->right = c;
+
+  if(b != a) a->data = b->data;
+
+  if(b->color == 'b')   // Naprawa struktury drzewa czerwono-czarnego
+    while((c != root) && (c->color == 'b'))
+      if(c == c->up->left)
+      {
+        d = c->up->right;
+
+        if(d->color == 'r')
+        {              // Przypadek 1
+          d->color = 'b';
+          c->up->color = 'r';
+          leftRotation(c->up);
+          d = c->up->right;
+        }
+
+        if((d->left->color == 'b') && (d->right->color == 'b'))
+        {              // Przypadek 2
+          d->color = 'r';
+          c = c->up;
+          continue;
+        }
+
+        if(d->right->color == 'b')
+        {              // Przypadek 3
+          d->left->color = 'b';
+          d->color = 'r';
+          rightRotation(d);
+          d = c->up->right;
+        }
+
+        d->color = c->up->color; // Przypadek 4
+        c->up->color = 'b';
+        d->right->color = 'b';
+        leftRotation(c->up);
+        c = root;         // To spowoduje zakoñczenie pêtli
+      }
+      else
+      {                // Przypadki lustrzane
+        d = c->up->left;
+
+        if(d->color == 'r')
+        {              // Przypadek 1
+          d->color = 'b';
+          c->up->color = 'r';
+          rightRotation(c->up);
+          d = c->up->left;
+        }
+
+        if((d->left->color == 'b') && (d->right->color == 'b'))
+        {              // Przypadek 2
+          d->color = 'r';
+          c = c->up;
+          continue;
+        }
+
+        if(d->left->color == 'b')
+        {              // Przypadek 3
+          d->right->color = 'b';
+          d->color = 'r';
+          leftRotation(d);
+          d = c->up->left;
+        }
+
+        d->color = c->up->color;  // Przypadek 4
+        c->up->color = 'b';
+        d->left->color = 'b';
+        rightRotation(c->up);
+        c = root;         // To spowoduje zakoñczenie pêtli
+      }
+
+  c->color = 'b';
+
+  delete b;
+  size--;
+}
+
+//TODO: the hell typename
+template<typename T>
+typename tree<T>::node * tree<T>::succesor(node * x)
+{
+  node * succesor;
+
+  if(x != &dummy)
+  {
+    if(x->right != &dummy) return minimum(x->right);
+    else
+    {
+      succesor = x->up;
+      while((succesor != &dummy) && (x == succesor->right))
+      {
+        x = succesor;
+        succesor = succesor->up;
+      }
+      return succesor;
+    }
+  }
+  return &dummy;
+}
+
+template<typename T>
+typename tree<T>::node * tree<T>::minimum(node * x)
+{
+  if(x != &dummy)
+    while(x->left != &dummy) x = x->left;
+  return x;
+}
 
 

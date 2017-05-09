@@ -19,5 +19,7 @@ int main()
     myTree.addNode(10);
     myTree.addNode(11);
     myTree.showTree();
+    myTree.deleteNode(myTree.getNode(15));
+    myTree.showTree();
     return 0;
 }

@@ -28,10 +28,13 @@ class tree
       void deleteTree(node * temp);
       void showTree();
       void traversingTree(node * temp);
-      node * findNode(node * temp, T val);
+      node * getNode(T val);
       void addNode(T val);
       void leftRotation (node * x);
       void rightRotation (node * x);
+      void deleteNode(node * a);
+      node * succesor(node * x);
+      node * minimum(node * x);
 
     private:
       node * root;
