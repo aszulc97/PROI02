@@ -13,6 +13,11 @@ int main()
     tree<int> myTree;
     myTree.addNode(12);
     myTree.addNode(15);
+    myTree.addNode(22);
+    myTree.addNode(7);
+    myTree.addNode(8);
+    myTree.addNode(10);
+    myTree.addNode(11);
     myTree.showTree();
     return 0;
 }

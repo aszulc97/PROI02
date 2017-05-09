@@ -42,9 +42,9 @@ void tree<T>::traversingTree(node * temp)
 {
   if(temp != &dummy)
   {
-    cout<<"Node data: "<<temp->data<<"\t"<<"Color: "<<temp->color<<"\t"<<"Parent: "<<temp->up->data;
-    traversingTree(temp->left); //traversing left subtree
+    cout<<"Node data: "<<temp->data<<"\t"<<"Color: "<<temp->color<<"\t"<<"Parent: "<<temp->up->data<<endl;
     traversingTree(temp->right);
+    traversingTree(temp->left); //traversing left subtree
   }
 }
 template<class T>
@@ -63,7 +63,7 @@ void tree<T>::showTree()
 template<typename T>
 void tree<T>::addNode(T val)
 {
-  node * newNode, uncle; //uncle - brother of a parent - like in family tree
+  node * newNode, * uncle; //uncle - brother of a parent - like in family tree
   newNode = new node;
   newNode->left=&dummy;
   newNode->right=&dummy;
@@ -83,7 +83,7 @@ void tree<T>::addNode(T val)
       {
         if (newNode->up->left == &dummy) //left leaf doesn't exist
         {
-          newNode->up->left == newNode; // newNode becomes left leaf
+          newNode->up->left = newNode; // newNode becomes left leaf
           break;
         }
         newNode->up = newNode->up->left;
@@ -143,18 +143,66 @@ void tree<T>::addNode(T val)
       }
 
       if(newNode == newNode->up->left)
+      {
         newNode = newNode->up;
         rightRotation(newNode);
       }
 
-      newNode->up->color = 'b'; 3
+      newNode->up->color = 'b';
       newNode->up->up->color = 'r';
       leftRotation(newNode->up->up);
       break;
     }
   }
   root->color = 'b';
+} //addNode
+
+template<typename T>
+void tree<T>::leftRotation(node * x)  // before: y - right son of x
+{
+  node * y, * temp;
+  y=x->right;
+  if (y != &dummy)
+  {
+    temp = x->up;
+    x->right = y->left;
+    if(x->right != &dummy) x->right->up = x;
+
+    y->left = x;
+    y->up = temp;
+    x->up = y;
+
+    if(temp != &dummy)
+    {
+      if(temp->left == x) temp->left = y; else temp->right = y;
+    }
+    else root = y;
+  } //after: x- left son of y
+}
+
+template<typename T>
+void tree<T>::rightRotation(node * x)
+{
+  node * y, * temp;
+
+  y = x->left;
+  if(y != &dummy)
+  {
+    temp = x->up;
+    x->left = y->right;
+    if(x->left != &dummy) x->left->up = x;
+
+    y->right = x;
+    y->up = temp;
+    x->up = y;
+
+    if(temp != &dummy)
+    {
+      if(temp->left == x) temp->left = y; else temp->right = y;
+    }
+    else root = y;
+  }
 }
 
 
-}
+
