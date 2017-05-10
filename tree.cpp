@@ -42,7 +42,7 @@ void tree<T>::traversingTree(node * temp)
 {
   if(temp != &dummy)
   {
-    cout<<"Node data: "<<temp->data<<"\t"<<"Color: "<<temp->color<<"\t"<<"Parent: "<<temp->up->data<<endl;
+    cout<<"Node data: "<<temp->data<<"\tColor: "<<temp->color<<"\tParent: "<<temp->up->data<<endl;
     traversingTree(temp->right);
     traversingTree(temp->left); //traversing left subtree
   }
@@ -55,7 +55,7 @@ void tree<T>::showTree()
   cout<<"---------------------------"<<endl;
   traversingTree(root);
   cout<<"---------------------------"<<endl;
-  cout<<"Size: "<<size<<endl;
+  cout<<endl;
 }
 
 template<class T>
@@ -319,7 +319,7 @@ typename tree<T>::node * tree<T>::succesor(node * x)
 
   if(x != &dummy)
   {
-    if(x->right != &dummy) return minimum(x->right);
+    if(x->right != &dummy) return minimum();
     else
     {
       succesor = x->up;
@@ -335,8 +335,10 @@ typename tree<T>::node * tree<T>::succesor(node * x)
 }
 
 template<typename T>
-typename tree<T>::node * tree<T>::minimum(node * x)
+typename tree<T>::node * tree<T>::minimum()
 {
+  node * x;
+  x=root;
   if(x != &dummy)
     while(x->left != &dummy) x = x->left;
   return x;

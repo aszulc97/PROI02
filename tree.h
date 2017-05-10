@@ -34,12 +34,12 @@ class tree
       void rightRotation (node * x);
       void deleteNode(node * a);
       node * succesor(node * x);
-      node * minimum(node * x);
+      node * minimum();
+      int size;
 
     private:
       node * root;
       node dummy; //dummy node contains every null node (leaf)
-      int size;
 };
 
 
