@@ -14,12 +14,12 @@ int main()
   tree<int> myTree1;
   tree<int> myTree2;
 
-  char choice, trig1=1, trig2=0;
+  char choice, trig2=0;
 
   do
   {
     system("cls");
-    if(trig1) myTree1.showTree();
+    myTree1.showTree();
     if(trig2) myTree2.showTree();
     cout<<"MENU:"<<endl;
     cout<<"---------------------"<<endl;
@@ -118,6 +118,7 @@ int main()
             myTree1.addNode(myTree2.minimum()->data);
             myTree2.deleteNode(myTree2.minimum());
           }
+          trig2=0;
         }break;
       case '6':
       {
@@ -168,11 +169,28 @@ int main()
       }break;
       case '7':
         {
-
+          int chosenValue;
+          if (trig2)
+          {
+            cout<<"Podaj wartosc elementu, ktorego szukasz: ";
+            cin>>chosenValue;
+            if (myTree1.getNode(chosenValue) && myTree2.getNode(chosenValue)) cout<<"Ten element jest w obu drzewach";
+            else if (myTree1.getNode(chosenValue)) cout<<"Ten element nalezy do pierwszego drzewa";
+            else if (myTree2.getNode(chosenValue)) cout<<"Ten element nalezy do drugiego drzewa";
+            else cout<<"W tych drzewach nie ma takiego elementu";
+          }
+          else
+          {
+            cout<<"Podaj wartosc elementu, ktorego szukasz: ";
+            cin>>chosenValue;
+            if (myTree1.getNode(chosenValue)) cout<<"Ten element nalezy do drzewa"<<endl;
+            else cout<<"W tym drzewie ma takiego elementu";
+          }
+          Sleep(2000);
         }break;
       case '8':
         {
-          if (trig1) cout<<"Ilosc wezlow w pierwszym drzewie: "<<myTree1.size<<endl;
+          cout<<"Ilosc wezlow w pierwszym drzewie: "<<myTree1.size<<endl;
           if (trig2) cout<<"Ilosc wezlow w drugim drzewie: "<<myTree2.size<<endl;
           Sleep(2000);
         }break;
