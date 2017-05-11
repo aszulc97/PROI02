@@ -42,7 +42,7 @@ void tree<T>::traversingTree(node * temp)
 {
   if(temp != &dummy)
   {
-    cout<<"Node data: "<<temp->data<<"\tColor: "<<temp->color<<"\tParent: "<<temp->up->data<<endl;
+    cout<<"Wartosc: "<<temp->data<<"\tKolor: "<<temp->color<<"\tOjciec: "<<temp->up->data<<endl;
     traversingTree(temp->right);
     traversingTree(temp->left); //traversing left subtree
   }
